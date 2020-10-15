@@ -32,11 +32,23 @@ def index():
         return {"error": "File content is empty"}, 400
 
     model = request.args.get("model", type=str, default="u2net")
+    alpha_matting = request.args.get("alpha_matting", type=bool, default=False)
+    alpha_matting_foreground_threshold = request.args.get("alpha_matting_foreground_threshold", type=int, default=240)
+    alpha_matting_background_threshold = request.args.get("alpha_matting_background_threshold", type=int, default=10)
+    alpha_matting_erode_structure_size = request.args.get("alpha_matting_erode_structure_size", type=int, default=10)
+
     if model not in ("u2net", "u2netp"):
         return {"error": "invalid query param 'model'"}, 400
 
     try:
-        return send_file(BytesIO(remove(file_content, model)), mimetype="image/png",)
+        return send_file(BytesIO(remove(
+            file_content,
+            model_name=model,
+            alpha_matting=alpha_matting,
+            alpha_matting_foreground_threshold=alpha_matting_foreground_threshold,
+            alpha_matting_background_threshold=alpha_matting_background_threshold,
+            alpha_matting_erode_structure_size=alpha_matting_erode_size,
+        )), mimetype="image/png")
     except Exception as e:
         app.logger.exception(e, exc_info=True)
         return {"error": "oops, something went wrong!"}, 500

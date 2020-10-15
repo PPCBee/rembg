@@ -80,6 +80,15 @@ Also you can send the file as a FormData (multipart/form-data):
     </form>
 ```
 
+There are several options how yout can modify result by passing
+
+| query param | type | default value |
+| model_name | str | u2net |
+| alpha_matting | bool | False |
+| alpha_matting_foreground_threshold | int | 240 |
+| alpha_matting_background_threshold | int | 10 |
+| alpha_matting_erode_structure_size | int | 10 |
+
 ### Usage as a library
 
 In `app.py`
